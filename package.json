@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "pull": "sudo git pull origin main"
+    "pull": "sudo git pull origin main",
+    "restart": "pm2 restart app"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
