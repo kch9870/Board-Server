@@ -1,21 +1,13 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
+let token = require('../middleware/token')
+let indexController = require('../controllers/index.controller')
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express11' });
-});
+router.get('/', (req, res, next)=>{
+    res.send("ho")
+})
 
-router.get('/test', function(req, res, next) {
-  res.send(
-    {
-      test1: "test1",
-      test2: "test2",
-      test3: {
-        test: "test",
-        test1: "test"
-      }
-    });
-});
+router.post('/test', token.checkToken, indexController.test)
 
 module.exports = router;
