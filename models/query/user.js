@@ -7,7 +7,7 @@ async function getUserInfo(){
 
     return await connect.select(query)
 }
-
+ 
 module.exports = {
     getUserInfo
 }
