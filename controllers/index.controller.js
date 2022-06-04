@@ -2,7 +2,7 @@ const {TestResponseModel} = require("../models/response/test.response.model");
 
 function test(req, res, next){
 
-    //db connection
+    //db connection test
 
     const testResponse = new TestResponseModel(req.body)
 
