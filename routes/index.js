@@ -20,7 +20,7 @@ router.get('/test', function(req, res, next) {
 });
 
 router.get('/dbTest', async (req, res)=>{
-    res.send(await getUserInfo())
+    res.send(await getUserInfo(1))
 })
 
 module.exports = router;

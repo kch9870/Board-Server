@@ -6,34 +6,19 @@ class DbConnection{
     #con
 
     constructor() {
-        this.#connecting().then(r => {
-        })
-
-    }
-    async #connecting(){
-        const con = mysql.createConnection(connectConst)
-        await con.connect(err=>{
+        this.#con = mysql.createConnection(connectConst)
+        this.#con.connect(err=>{
             if(!err) {
                 console.log("DB 연결 성공")
-                this.#con = con
             }
             else{
-
                 console.log("DB 연결 실패 \n", err)
                 console.log(err)
             }
         })
-        // if(!err) return con
-        // for(let i=0; i<5; i++){
-        //     await con.connect(err=>{
-        //         if(!err) return con
-        //         console.log(err)
-        //     })
-        // }
     }
-    select(query){
+    query(query){
         return new Promise(resolve => {
-
             this.#con.query(query, (err, result)=>{
                 if (err) {
                     console.log(err)
@@ -44,16 +29,12 @@ class DbConnection{
             })
         })
     }
-    update(){
-
-    }
-    delete(){
-
-    }
 }
 
-const connect = new DbConnection()
+
+
+const db = new DbConnection()
 
 module.exports ={
-    connect
+    db
 }

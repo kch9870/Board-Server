@@ -2,3 +2,10 @@
 .idea/Board-Server.iml
 .idea/modules.xml
 .idea/vcs.xml
+.idea/deployment.xml
+.idea/sshConfigs.xml
+.idea/webServers.xml
+
+.gitignore
+.idea/sqlGenerator.xml
+.idea/codeStyles/codeStyleConfig.xml
