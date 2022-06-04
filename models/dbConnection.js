@@ -5,31 +5,8 @@ class DbConnection{
 
     #con
 
-    constructor() {
-        this.#connecting().then(r => {
-        })
-
-    }
-    async #connecting(){
-        const con = mysql.createConnection(connectConst)
-        await con.connect(err=>{
-            if(!err) {
-                console.log("DB 연결 성공")
-                this.#con = con
-            }
-            else{
-
-                console.log("DB 연결 실패 \n", err)
-                console.log(err)
-            }
-        })
-        // if(!err) return con
-        // for(let i=0; i<5; i++){
-        //     await con.connect(err=>{
-        //         if(!err) return con
-        //         console.log(err)
-        //     })
-        // }
+    constructor(con) {
+        this.#con = con
     }
     select(query){
         return new Promise(resolve => {
@@ -52,7 +29,23 @@ class DbConnection{
     }
 }
 
-const connect = new DbConnection()
+async function connectionDB(){
+    const con = mysql.createConnection(connectConst)
+    await con.connect(err=>{
+        if(!err) {
+            console.log("DB 연결 성공")
+            return new DbConnection(con)
+        }
+        else{
+
+            console.log("DB 연결 실패 \n", err)
+            console.log(err)
+        }
+    })
+}
+
+const connect = connectionDB()
+
 
 module.exports ={
     connect
