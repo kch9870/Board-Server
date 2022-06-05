@@ -1,5 +1,5 @@
 const express = require('express');
-const {getUserInfo} = require("../models/query/user.js");
+const {getUserInfo, addUser} = require("../models/query/user");
 const router = express.Router();
 
 /* GET home page. test*/
@@ -20,7 +20,7 @@ router.get('/test', function(req, res, next) {
 });
 
 router.get('/dbTest', async (req, res)=>{
-    res.send(await getUserInfo(1))
+    res.send(await addUser("boipqiod@gmail.com", "1234", "sh", "kuzim"))
 })
 
 module.exports = router;

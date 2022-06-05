@@ -9,6 +9,11 @@ function checkNull(data){
 	return true
 }
 
+function toJSON(object){
+	return JSON.parse(JSON.stringify(object))
+}
+
 module.exports = {
-	checkNull
+	checkNull,
+	toJSON
 }

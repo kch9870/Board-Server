@@ -10,38 +10,50 @@ async function getAllUserInfo(){
 }
 
 /**
- * 유저 id로 유저 정보 가져옴
- * @param {Number} userId
- * @returns
+ * user 테이블에 유저 정보 셀렉트
+ * @param {String} columnName 컬럼 이름
+ * @param {String} value 값
+ * @param {String} targetColumn 찾고 싶은 컬럼 (디폴트 all)
+ * @returns {Object} 해당 유저의 정보
  */
-async function getUserInfo(userId){
-    if(!userId) return false
+async function getUserInfo(columnName ,value, targetColumn="*"){
+    if(!columnName) return false
+    if(!value) return false
 
-    const query = `
-        SELECT * FROM user WHERE user_id = ${userId}
-    `
+    const query =  `SELECT ${targetColumn} FROM user WHERE ${columnName} = ${value}`
 
-    return await db.query(query)
+    return (await db.query(query))[0]
 }
 
 /**
- * 유저 추가
- * @param userInfo
- * @returns {Promise<unknown>}
+ * 유저 추가 (회원가입)
+ * @param {String} email 로그인 이메일
+ * @param {String} password 비밀번호
+ * @param {String} name 이름
+ * @param {String} nickName 별명
+ * @returns {String}회원가입 된 유저의 pk
  */
-async function addUser(userInfo){
+async function addUser(email, password, name, nickName){
 
-    if(!checkNull(userInfo)) return
+    if(!email || !password || !name || !nickName) return false
 
     const query = `
-        INSERT INTO user (user_id, email, password, name, nick_name) 
-        VALUES ('${userInfo.userId}', '${userInfo.email}', '${userInfo.password}', '${userInfo.name}', '${userInfo.nickName}');
+        INSERT INTO user (email, password, name, nick_name) 
+        VALUES ('${email}', '${password}', '${name}', '${nickName}');
     `
 
-    return await db.query(query)
-}
+    const insertResult = await db.query(query)
 
-getUserInfo(0).then(r =>{})
+    if(insertResult["serverStatus"] !== 2) return false
+
+    const selectLastId = `
+        SELECT LAST_INSERT_ID();
+    `
+
+    const lastIdResult = await db.query(selectLastId)
+
+    return { userId: lastIdResult[0]["LAST_INSERT_ID()"] }
+}
 
 module.exports = {
     getAllUserInfo,
