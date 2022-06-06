@@ -1,12 +1,13 @@
 const mysql = require("mysql")
-const {connectConst} = require("../common/connectContant.js")
+const {mysqlConfig} = require("../common/mysplConfig.js")
+const {toJSON} = require("../utils/dataUtils");
 
 class DbConnection{
 
     #con
 
-    constructor(con) {
-        this.#con = mysql.createConnection(connectConst)
+    constructor() {
+        this.#con = mysql.createConnection(mysqlConfig)
         this.#con.connect(err=>{
             if(!err) {
                 console.log("DB 연결 성공")
@@ -17,28 +18,24 @@ class DbConnection{
             }
         })
     }
-    select(query){
+    query(query){
         return new Promise(resolve => {
-
             this.#con.query(query, (err, result)=>{
-                if (err) {
-                    console.log(err)
-                    // throw err;err
-                }
-                console.log("Result: " + result);
-                resolve(result)
+                console.log("DB query \n", query)
+
+                if (err) console.log(err)
+
+                const _result = toJSON(result)
+
+                console.log("DB result \n", _result);
+                resolve(_result)
             })
         })
     }
-    update(){
-
-    }
-    delete(){
-
-    }
 }
-const connect = new DbConnection()
+
+const db = new DbConnection()
 
 module.exports ={
-    connect
+    db
 }
