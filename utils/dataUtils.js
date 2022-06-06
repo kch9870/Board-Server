@@ -4,7 +4,7 @@
  */
 function checkNull(data){
 	for(const item in data){
-		if(!item) return false
+		if(!data[item]) return false
 	}
 	return true
 }

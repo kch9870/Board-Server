@@ -9,3 +9,5 @@
 .gitignore
 .idea/sqlGenerator.xml
 .idea/codeStyles/codeStyleConfig.xml
+.idea/misc.xml
+.idea/sqldialects.xml

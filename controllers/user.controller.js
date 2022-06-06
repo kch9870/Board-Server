@@ -1,23 +1,41 @@
-const {BaseResponseModel} = require("../models/response/base.response.model")
-const {UserRequestModel} = require("../models/request/user.request.model")
+const {UserSignInModel} = require("../models/request/user.request.model")
 const {getUserInfo, addUser} = require("../models/query/user");
 const { checkNull } = require("../utils/dataUtils");
+const {UserResponseModel} = require("../models/response/user/user.response.model");
 
 async function signIn (req,res){
 
-    let userModel = new UserRequestModel(req)
+    const userModel = new UserSignInModel(req.body)
 
-    const response = new BaseResponseModel()
+    const response = new UserResponseModel()
 
-    // Bad request
-    if(checkNull(userModel)){
-
-        response.responseCode = 400
-        response.responseMsg = "b"
-
-        res.send('null check')
+    if(!checkNull(userModel)){
+        console.log("/signin params is null")
+        sendError(response, res, 400, "bad request")
+        return
     }
-    res.send(BaseResponseModel)
+
+    const userInfo = await getUserInfo("email", userModel.email)
+
+    if(userInfo === {} || userInfo.password !== userModel.password) {
+        sendError(response, res, 401, "Not match User")
+    }
+
+    response.responseCode = 200
+    response.responseMsg = "success"
+    response.setUserInfo(userInfo)
+
+    res.send(response)
+}
+
+async function signUp(){
+
+}
+
+function sendError(response, res, code, msg){
+    response.responseCode = code
+    response.responseMsg = msg
+    res.send(response)
 }
 
 module.exports = {

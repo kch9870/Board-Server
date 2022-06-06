@@ -6,7 +6,7 @@ class BaseResponseModel{
     constructor() {
 
     }
-    isSuccess(){
+    isSuccess() {
         return this.responseCode === '200'
     }
 }

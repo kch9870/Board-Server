@@ -20,7 +20,7 @@ async function getUserInfo(columnName ,value, targetColumn="*"){
     if(!columnName) return false
     if(!value) return false
 
-    const query =  `SELECT ${targetColumn} FROM user WHERE ${columnName} = ${value}`
+    const query =  `SELECT ${targetColumn} FROM user WHERE ${columnName} = '${value}'`
 
     return (await db.query(query))[0]
 }
