@@ -1,4 +1,4 @@
-const {UserSignInModel} = require("../models/request/user.request.model")
+const {UserSignInModel, UserSignUpModel} = require("../models/request/user.request.model")
 const {getUserInfo, addUser} = require("../models/query/user");
 const { checkNull } = require("../utils/dataUtils");
 const {UserResponseModel} = require("../models/response/user/user.response.model");
@@ -28,7 +28,28 @@ async function signIn (req,res){
     res.send(response)
 }
 
-async function signUp(){
+async function signUp(req,res){
+    const userModel = new UserSignUpModel(req.body)
+
+    const response = new UserResponseModel()
+
+    if(!checkNull(userModel)){
+        console.log("/signup params is null")
+        sendError(response, res, 400, "bad request")
+        return
+    }
+
+    const addResult = await addUser(userModel.email,userModel.password,userModel.name,userModel.nickName)
+
+    if(!addResult) {
+        sendError(response, res, 401, "db not connected")
+    }
+
+    response.responseCode = 200
+    response.responseMsg = "success"
+    response.userId = addResult.userId
+
+    res.send(response)
 
 }
 
@@ -39,5 +60,6 @@ function sendError(response, res, code, msg){
 }
 
 module.exports = {
-    signIn
+    signIn,
+    signUp
 }
