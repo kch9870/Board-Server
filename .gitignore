@@ -15,3 +15,5 @@
 .idea/sqlGenerator.xml
 >>>>>>> feature/querys/borad
 .idea/codeStyles/codeStyleConfig.xml
+.idea/misc.xml
+.idea/sqldialects.xml
