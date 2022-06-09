@@ -3,11 +3,17 @@
 .idea/modules.xml
 .idea/vcs.xml
 .idea/deployment.xml
+<<<<<<< HEAD
+.idea/sqlGenerator.xml
+.idea/sshConfigs.xml
+.idea/webServers.xml
+=======
 .idea/sshConfigs.xml
 .idea/webServers.xml
 
 .gitignore
 .idea/sqlGenerator.xml
+>>>>>>> feature/querys/borad
 .idea/codeStyles/codeStyleConfig.xml
 .idea/misc.xml
 .idea/sqldialects.xml

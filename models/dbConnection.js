@@ -7,10 +7,11 @@ class DbConnection{
     #con
 
     constructor() {
-        this.#con = mysql.createConnection(mysqlConfig)
-        this.#con.connect(err=>{
+        this.#con = mysql.createPool(mysqlConfig)
+        this.#con.getConnection((err, connection)=>{
             if(!err) {
                 console.log("DB 연결 성공")
+                this.#con = connection
             }
             else{
                 console.log("DB 연결 실패 \n", err)

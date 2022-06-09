@@ -14,7 +14,7 @@ async function getAllUserInfo(){
  * @param {String} columnName 컬럼 이름
  * @param {String} value 값
  * @param {String} targetColumn 찾고 싶은 컬럼 (디폴트 all)
- * @returns {Object} 해당 유저의 정보
+ * @returns {Promise<boolean|{Object}>} 해당 유저의 타겟 칼람 정보
  */
 async function getUserInfo(columnName ,value, targetColumn="*"){
     if(!columnName) return false
@@ -27,11 +27,11 @@ async function getUserInfo(columnName ,value, targetColumn="*"){
 
 /**
  * 유저 추가 (회원가입)
- * @param {String} email 로그인 이메일
- * @param {String} password 비밀번호
- * @param {String} name 이름
- * @param {String} nickName 별명
- * @returns {String}회원가입 된 유저의 pk
+ * @param email 로그인 아이디
+ * @param password 로그인 비밀번호
+ * @param name 이름
+ * @param nickName 별명
+ * @returns {Promise<{userId: {Number}}|boolean>} 유저 pk
  */
 async function addUser(email, password, name, nickName){
 
