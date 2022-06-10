@@ -9,6 +9,8 @@ async function signIn (req,res){
 
     const userModel = new UserSignInModel(req.body)
 
+    console.log(userModel);
+
     const response = new UserResponseModel()
 
     if(!checkNull(userModel)){
