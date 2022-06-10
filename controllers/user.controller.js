@@ -21,7 +21,7 @@ async function signIn (req,res){
 
     const userInfo = await getUserInfo("email", userModel.email)
 
-    if(userInfo === {} || userInfo.password !== userModel.password) {
+    if(!userInfo || userInfo.password !== userModel.password) {
         sendError(response, res, 401, "Not match User")
     }
 
