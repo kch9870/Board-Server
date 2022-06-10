@@ -2,7 +2,9 @@ const {UserSignInModel, UserSignUpModel} = require("../models/request/user.reque
 const {getUserInfo, addUser} = require("../models/query/user");
 const { checkNull } = require("../utils/dataUtils");
 const {UserResponseModel} = require("../models/response/user/user.response.model");
+const { BaseResponseModel } = require("../models/response/base.response.model");
 
+// 로그인
 async function signIn (req,res){
 
     const userModel = new UserSignInModel(req.body)
@@ -28,6 +30,7 @@ async function signIn (req,res){
     res.send(response)
 }
 
+// 회원가입
 async function signUp(req,res){
     const userModel = new UserSignUpModel(req.body)
 
@@ -53,6 +56,34 @@ async function signUp(req,res){
 
 }
 
+// 아이디 중복 체크
+async function emailCheck(req,res){
+    const userEmail = req.body
+
+    const response = new BaseResponseModel()
+
+
+    console.log(req.body);
+
+    if(!checkNull(userEmail)){
+        console.log("/emailCheck params is null")
+        sendError(response, res, 400, "bad request")
+        return
+    }
+
+    const resultEmail = await getUserInfo("email", userEmail.email)
+
+    if(resultEmail.email === userEmail.email) {
+        sendError(response, res, 401, "Exist User Email")
+    }
+    else{
+        response.responseCode = 200
+        response.responseMsg = "success"
+    
+        res.send(response)
+    }
+}
+
 function sendError(response, res, code, msg){
     response.responseCode = code
     response.responseMsg = msg
@@ -61,5 +92,6 @@ function sendError(response, res, code, msg){
 
 module.exports = {
     signIn,
-    signUp
+    signUp,
+    emailCheck
 }
