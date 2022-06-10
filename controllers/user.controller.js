@@ -57,7 +57,7 @@ async function signUp(req,res){
 }
 
 // 아이디 중복 체크
-async function emailCheck(req,res){
+async function checkEmail(req,res){
     const userEmail = req.body
 
     const response = new BaseResponseModel()
@@ -73,7 +73,7 @@ async function emailCheck(req,res){
 
     const resultEmail = await getUserInfo("email", userEmail.email)
 
-    if(resultEmail.email === userEmail.email) {
+    if(resultEmail) {
         sendError(response, res, 401, "Exist User Email")
     }
     else{
@@ -84,6 +84,35 @@ async function emailCheck(req,res){
     }
 }
 
+// 닉네임 중복체크
+async function checkNickName(req,res){
+    const userNickName = req.body
+
+    const response = new BaseResponseModel()
+
+
+    console.log(req.body);
+
+    if(!checkNull(userNickName)){
+        console.log("/nickNameCheck params is null")
+        sendError(response, res, 400, "bad request")
+        return
+    }
+
+    const resultNickName = await getUserInfo("nick_name", userNickName.nickName)
+
+    if(resultNickName) {
+        sendError(response, res, 401, "Exist User NickName")
+    }
+    else{
+        response.responseCode = 200
+        response.responseMsg = "success"
+    
+        res.send(response)
+    }
+}
+
+
 function sendError(response, res, code, msg){
     response.responseCode = code
     response.responseMsg = msg
@@ -93,5 +122,6 @@ function sendError(response, res, code, msg){
 module.exports = {
     signIn,
     signUp,
-    emailCheck
+    checkEmail,
+    checkNickName
 }
