@@ -12,7 +12,7 @@ const {getTimeNow} = require("../../utils/dateUtils");
  */
 async function addBoard(title, content, userId, category, date= getTimeNow()){
 
-	const query = `
+	let query = `
 INSERT INTO board(user_id, title, content, date, category, views)
 VALUES (${userId}, "${title}", "${content}", "${date}", "${category}", 0)
 	`
@@ -21,11 +21,11 @@ VALUES (${userId}, "${title}", "${content}", "${date}", "${category}", 0)
 
 	if(insertResult["serverStatus"] !== 2) return false
 
-	const selectLastId = `
+	query = `
         SELECT LAST_INSERT_ID();
     `
 
-	const lastIdResult = await db.query(selectLastId)
+	const lastIdResult = await db.query(query)
 
 	return { boardId: lastIdResult[0]["LAST_INSERT_ID()"] }
 }
@@ -42,8 +42,12 @@ async function getBoardList(pageNo=1, numOfPages=15, category="all") {
 	const where = category === 'all' ? `` :`WHERE category = '${category}'`
 	pageNo = (pageNo-1) * numOfPages
 
-	const query =
-`SELECT board_id, title, content, category, date, views, nick_name
+	let query =
+`SELECT board_id, title, content, category, date, views, nick_name, (
+			SELECT COUNT(board_id)
+			FROM comment
+			WHERE board.board_id = comment.board_id
+			) AS commentCount
 FROM board
 LEFT JOIN user ON board.user_id = user.user_id
 ${where}
@@ -52,14 +56,42 @@ LIMIT ${numOfPages} OFFSET ${pageNo}`
 
 	const listResult = await db.query(query)
 
-	return await db.query(query)
+	query = `SELECT count(board_id) as totalCount FROM board`
+
+	const totalCount = await db.query(query)
+
+	return {
+		totalCount: totalCount[0].totalCount,
+		board: listResult
+	}
 }
 
-function getBoardDetail(bordId){
+async function getBoardDetail(bordId){
 
+	let query =
+`SELECT board_id, title, content, nick_name, category, date, views, (
+			SELECT COUNT(board_id)
+			FROM comment
+			WHERE board.board_id = comment.board_id
+			) AS commentCount
+FROM board
+LEFT JOIN user ON board.user_id = user.user_id
+WHERE board_id = "${bordId}"`
+
+	const resultDetail = await db.query(query)
+	query =
+`SELECT comment_id, nick_name, date, comment
+FROM comment
+LEFT JOIN user ON comment.user_id = user.user_id
+WHERE board_id = "${bordId}"`
+
+	resultDetail[0].comment = await db.query(query)
+
+	return resultDetail[0]
 }
 
 module.exports = {
 	addBoard,
-	getBoardList
+	getBoardList,
+	getBoardDetail
 }
