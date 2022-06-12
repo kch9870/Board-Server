@@ -9,8 +9,6 @@ async function signIn (req,res){
 
     const userModel = new UserSignInModel(req.body)
 
-    console.log(userModel);
-
     const response = new UserResponseModel()
 
     if(!checkNull(userModel)){
@@ -22,21 +20,22 @@ async function signIn (req,res){
     const userInfo = await getUserInfo("email", userModel.email)
 
     if(!userInfo || userInfo.password !== userModel.password) {
-        sendError(response, res, 401, "Not match User")
+        sendError(response, res, 401, "Not match User Password")
     }
-
-    response.responseCode = 200
-    response.responseMsg = "success"
-    response.setUserInfo(userInfo)
-
-    res.send(response)
+    else{
+        response.responseCode = 200
+        response.responseMsg = "success"
+        response.setUserInfo(userInfo)
+        
+        res.send(response)
+    }
 }
 
 // 회원가입
 async function signUp(req,res){
     const userModel = new UserSignUpModel(req.body)
 
-    const response = new UserResponseModel()
+    const response = new BaseResponseModel()
 
     if(!checkNull(userModel)){
         console.log("/signup params is null")
@@ -64,9 +63,6 @@ async function checkEmail(req,res){
 
     const response = new BaseResponseModel()
 
-
-    console.log(req.body);
-
     if(!checkNull(userEmail)){
         console.log("/emailCheck params is null")
         sendError(response, res, 400, "bad request")
@@ -92,11 +88,8 @@ async function checkNickName(req,res){
 
     const response = new BaseResponseModel()
 
-
-    console.log(req.body);
-
     if(!checkNull(userNickName)){
-        console.log("/nickNameCheck params is null")
+        console.log("/checkNickName params is null")
         sendError(response, res, 400, "bad request")
         return
     }
@@ -114,6 +107,34 @@ async function checkNickName(req,res){
     }
 }
 
+// 유저 pk로 닉네임 불러오기
+async function getUserNickName(req,res){
+    const userId = req.query.userId
+
+    const response = new BaseResponseModel()
+
+    if(!checkNull(userId)){
+        console.log("/getUserNickName params is null")
+        sendError(response, res, 400, "bad request")
+        return
+    }
+
+    const getNickName = await getUserInfo("user_id", userId)
+
+    if(!getNickName) {
+        sendError(response, res, 401, "Not Exist UserId")
+    }
+    else{
+        console.log(getNickName)
+
+        response.responseCode = 200
+        response.responseMsg = "success"
+        response.nickName = getNickName["nick_name"]
+    
+        res.send(response)
+    }
+}
+
 
 function sendError(response, res, code, msg){
     response.responseCode = code
@@ -125,5 +146,6 @@ module.exports = {
     signIn,
     signUp,
     checkEmail,
-    checkNickName
+    checkNickName,
+    getUserNickName
 }
