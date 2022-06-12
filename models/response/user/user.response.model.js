@@ -1,7 +1,7 @@
 const {BaseResponseModel} = require("../base.response.model")
 
 class UserResponseModel extends BaseResponseModel{
-    
+
     userInfo = {}
     
     constructor() {

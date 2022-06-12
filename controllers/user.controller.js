@@ -34,7 +34,7 @@ async function signIn (req,res){
 async function signUp(req,res){
     const userModel = new UserSignUpModel(req.body)
 
-    const response = new UserResponseModel()
+    const response = new BaseResponseModel()
 
     if(!checkNull(userModel)){
         console.log("/signup params is null")
