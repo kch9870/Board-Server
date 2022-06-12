@@ -2,19 +2,18 @@ const {BaseResponseModel} = require("../base.response.model")
 
 class UserResponseModel extends BaseResponseModel{
 
-    userId
-    password
     userInfo = {}
-
+    
     constructor() {
         super()
 
     }
+
     setUserInfo(userInfo){
-        for(const key in userInfo){
-            if(key !== "password") this.userInfo[key] = userInfo[key]
-            else this.password = userInfo[key]
-        }
+        this.userInfo["userId"] = userInfo["user_id"]
+        this.userInfo["email"] = userInfo["email"]
+        this.userInfo["name"] = userInfo["name"]
+        this.userInfo["nickName"] = userInfo["nick_name"]
     }
 }
 

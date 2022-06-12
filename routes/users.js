@@ -11,9 +11,14 @@ router.get('/', function(req, res, next) {
 router.post('/signin',userController.signIn)
 /* POST signup. */
 router.post('/signup',userController.signUp)
-/* POST checkemail. */
+/* POST checkEmail. */
 router.post('/checkEmail',userController.checkEmail)
-/* POST checknickname. */
+/* POST checkNickName. */
 router.post('/checkNickName',userController.checkNickName)
+
+
+/* GET /getUserNickName. */
+router.get('/getUserNickName',userController.getUserNickName)
+
 
 module.exports = router
