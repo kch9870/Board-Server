@@ -22,12 +22,13 @@ async function signIn (req,res){
     if(!userInfo || userInfo.password !== userModel.password) {
         sendError(response, res, 401, "Not match User Password")
     }
-
-    response.responseCode = 200
-    response.responseMsg = "success"
-    response.setUserInfo(userInfo)
-    
-    res.send(response)
+    else{
+        response.responseCode = 200
+        response.responseMsg = "success"
+        response.setUserInfo(userInfo)
+        
+        res.send(response)
+    }
 }
 
 // 회원가입
@@ -88,7 +89,7 @@ async function checkNickName(req,res){
     const response = new BaseResponseModel()
 
     if(!checkNull(userNickName)){
-        console.log("/nickNameCheck params is null")
+        console.log("/checkNickName params is null")
         sendError(response, res, 400, "bad request")
         return
     }
@@ -106,6 +107,34 @@ async function checkNickName(req,res){
     }
 }
 
+// 유저 pk로 닉네임 불러오기
+async function getUserNickName(req,res){
+    const userId = req.query.userId
+
+    const response = new BaseResponseModel()
+
+    if(!checkNull(userId)){
+        console.log("/getUserNickName params is null")
+        sendError(response, res, 400, "bad request")
+        return
+    }
+
+    const getNickName = await getUserInfo("user_id", userId)
+
+    if(!getNickName) {
+        sendError(response, res, 401, "Not Exist UserId")
+    }
+    else{
+        console.log(getNickName)
+
+        response.responseCode = 200
+        response.responseMsg = "success"
+        response.nickName = getNickName["nick_name"]
+    
+        res.send(response)
+    }
+}
+
 
 function sendError(response, res, code, msg){
     response.responseCode = code
@@ -117,5 +146,6 @@ module.exports = {
     signIn,
     signUp,
     checkEmail,
-    checkNickName
+    checkNickName,
+    getUserNickName
 }
