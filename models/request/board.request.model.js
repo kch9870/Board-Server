@@ -13,6 +13,20 @@ class RegisterBoardModel{
     }
 }
 
+class CategoryListBoardModel{
+
+    pageNo
+    numsOfPages
+    category
+
+    constructor(req) {
+        this.pageNo = req.pageNo
+        this.numsOfPages = req.numsOfPages
+        this.category = req.category
+    }
+}
+
 module.exports = {
-    RegisterBoardModel
+    RegisterBoardModel,
+    CategoryListBoardModel
 }

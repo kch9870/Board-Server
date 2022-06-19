@@ -6,4 +6,7 @@ const router = express.Router()
 router.post('/registerBoard',boardController.registerBoard)
 
 
+/* GET boardCategoryList. */
+router.get('/categoryList',boardController.categoryListBoard)
+
 module.exports = router

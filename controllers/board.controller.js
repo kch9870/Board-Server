@@ -1,5 +1,5 @@
-const {RegisterBoardModel} = require("../models/request/board.request.model")
-const {addBoard} = require("../models/query/board");
+const {RegisterBoardModel,CategoryListBoardModel} = require("../models/request/board.request.model")
+const {addBoard, getBoardList} = require("../models/query/board");
 const { checkNull } = require("../utils/dataUtils");
 const {BoardResponseModel} = require("../models/response/board/board.response.model");
 const { BaseResponseModel } = require("../models/response/base.response.model");
@@ -31,6 +31,39 @@ async function registerBoard (req,res){
 }
 
 
+// 카테고리 별 게시글 리스트 불러오기
+async function categoryListBoard (req,res){
+
+    const response = new BaseResponseModel()
+    const addResult = await getBoardList(req.query.pageNo ,req.query.numsOfPages,req.query.category)
+
+    const list = new Array()
+
+    response.responseCode = 200
+    response.responseMsg = "success"
+    response.pageNo = req.query.pageNo
+    response.totalCount = addResult.totalCount
+    response.lastPage = addResult.totalCount/req.query.numsOfPages
+    response.list = list
+    console.log(addResult.board.length)
+    console.log(req.query)
+    for(var i = 0; i < addResult.board.length; i++){
+        board ={}       // 초기화
+
+        board["boardId"] = addResult.board[i]["board_id"]
+        board["title"] = addResult.board[i]["title"]
+        board["category"] = addResult.board[i]["category"]
+        board["date"] = addResult.board[i]["date"]
+        board["views"] = addResult.board[i]["views"]
+        board["nickName"] = addResult.board[i]["nick_name"]
+        board["commentCount"] = addResult.board[i]["commentCount"]
+
+        list.push(board)
+    }
+
+    res.send(response)
+}
+
 
 
 function sendError(response, res, code, msg){
@@ -40,5 +73,6 @@ function sendError(response, res, code, msg){
 }
 
 module.exports = {
-    registerBoard
+    registerBoard,
+    categoryListBoard
 }
