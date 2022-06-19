@@ -56,7 +56,7 @@ LIMIT ${numOfPages} OFFSET ${pageNo}`
 
 	const listResult = await db.query(query)
 
-	query = `SELECT count(board_id) as totalCount FROM board`
+	query = `SELECT count(board_id) as totalCount FROM board ${where}`
 
 	const totalCount = await db.query(query)
 
@@ -66,7 +66,7 @@ LIMIT ${numOfPages} OFFSET ${pageNo}`
 	}
 }
 
-async function getBoardDetail(bordId){
+async function getBoardDetail(boardId){
 
 	let query =
 `SELECT board_id, title, content, nick_name, category, date, views, (
@@ -76,14 +76,14 @@ async function getBoardDetail(bordId){
 			) AS commentCount
 FROM board
 LEFT JOIN user ON board.user_id = user.user_id
-WHERE board_id = "${bordId}"`
+WHERE board_id = "${boardId}"`
 
 	const resultDetail = await db.query(query)
 	query =
 `SELECT comment_id, nick_name, date, comment
 FROM comment
 LEFT JOIN user ON comment.user_id = user.user_id
-WHERE board_id = "${bordId}"`
+WHERE board_id = "${boardId}"`
 
 	resultDetail[0].comment = await db.query(query)
 
