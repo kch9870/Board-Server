@@ -1,4 +1,4 @@
-const {UserSignInModel, UserSignUpModel} = require("../models/request/user.request.model")
+const {UserSignInModel, UserSignUpModel, UserCheckEmailModel, UserCheckNickName} = require("../models/request/user.request.model")
 const {getUserInfo, addUser} = require("../models/query/user");
 const { checkNull } = require("../utils/dataUtils");
 const {UserResponseModel} = require("../models/response/user/user.response.model");
@@ -7,15 +7,15 @@ const { BaseResponseModel } = require("../models/response/base.response.model");
 // 로그인
 async function signIn (req,res){
 
-    const userModel = new UserSignInModel(req.body)
+    const userModel = new UserSignInModel()
 
-    const response = new UserResponseModel()
-
-    if(!checkNull(userModel)){
+    if(!userModel.checkPrams(req.body)){
         console.log("/signin params is null")
         sendError(response, res, 400, "bad request")
         return
     }
+
+    const response = new UserResponseModel()
 
     const userInfo = await getUserInfo("email", userModel.email)
 
@@ -33,15 +33,15 @@ async function signIn (req,res){
 
 // 회원가입
 async function signUp(req,res){
-    const userModel = new UserSignUpModel(req.body)
+    const userModel = new UserSignUpModel()
 
-    const response = new BaseResponseModel()
-
-    if(!checkNull(userModel)){
+    if(!userModel.checkPrams(req.body)){
         console.log("/signup params is null")
         sendError(response, res, 400, "bad request")
         return
     }
+
+    const response = new BaseResponseModel()
 
     const addResult = await addUser(userModel.email,userModel.password,userModel.name,userModel.nickName)
 
@@ -59,15 +59,15 @@ async function signUp(req,res){
 
 // 아이디 중복 체크
 async function checkEmail(req,res){
-    const userEmail = req.body
+    const userEmail = new UserCheckEmailModel()
 
-    const response = new BaseResponseModel()
-
-    if(!checkNull(userEmail)){
+    if(!userEmail.checkPrams(req.body)){
         console.log("/emailCheck params is null")
         sendError(response, res, 400, "bad request")
         return
     }
+
+    const response = new BaseResponseModel()
 
     const resultEmail = await getUserInfo("email", userEmail.email)
 
@@ -84,7 +84,13 @@ async function checkEmail(req,res){
 
 // 닉네임 중복체크
 async function checkNickName(req,res){
-    const userNickName = req.body
+    const userNickName = new UserCheckNickName()
+
+    if(!userNickName.checkPrams(req.body)){
+        console.log("/emailCheck params is null")
+        sendError(response, res, 400, "bad request")
+        return
+    }
 
     const response = new BaseResponseModel()
 

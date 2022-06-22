@@ -1,28 +1,25 @@
-class RegisterBoardModel{
+const {BaseRequestModel} = require("./base.request.model");
+
+class RegisterBoardModel extends BaseRequestModel{
 
     title
     content
     userId
     category
 
-    constructor(req) {
-        this.title = req.title
-        this.content = req.content
-        this.userId = req.userId
-        this.category = req.category
+    constructor() {
+        super()
     }
 }
 
-class CategoryListBoardModel{
+class CategoryListBoardModel extends BaseRequestModel{
 
     pageNo
     numsOfPages
     category
 
-    constructor(req) {
-        this.pageNo = req.pageNo
-        this.numsOfPages = req.numsOfPages
-        this.category = req.category
+    constructor() {
+        super()
     }
 }
 

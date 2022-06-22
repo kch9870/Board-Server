@@ -3,7 +3,7 @@ const {checkNull} = require("../../utils/dataUtils");
 
 async function getAllUserInfo(){
     const query = `
-        SELECT * FROM user
+        SELECT user_id as  FROM user
     `
 
     return await db.query(query)
@@ -19,6 +19,15 @@ async function getAllUserInfo(){
 async function getUserInfo(columnName ,value, targetColumn="*"){
     if(!columnName) return false
     if(!value) return false
+
+    switch (targetColumn){
+        case '*': targetColumn = 'user_id as userID, email, name, nick_name as nickName'
+            break
+        case 'user_id' : targetColumn = 'user_id as userID'
+            break
+        case 'nick_name' : targetColumn = 'nick_name as nickName'
+            break
+    }
 
     const query =  `SELECT ${targetColumn} FROM user WHERE ${columnName} = '${value}'`
 

@@ -43,7 +43,7 @@ async function getBoardList(pageNo=1, numOfPages=15, category="all") {
 	pageNo = (pageNo-1) * numOfPages
 
 	let query =
-`SELECT board_id, title, content, category, date, views, nick_name, (
+`SELECT board_id as boardId, title, content, category, date, views, nick_name as nickName, (
 			SELECT COUNT(board_id)
 			FROM comment
 			WHERE board.board_id = comment.board_id
@@ -69,7 +69,7 @@ LIMIT ${numOfPages} OFFSET ${pageNo}`
 async function getBoardDetail(bordId){
 
 	let query =
-`SELECT board_id, title, content, nick_name, category, date, views, (
+`SELECT board_id as bordId, title, content, nick_name as nickName, category, date, views, (
 			SELECT COUNT(board_id)
 			FROM comment
 			WHERE board.board_id = comment.board_id
@@ -80,7 +80,7 @@ WHERE board_id = "${bordId}"`
 
 	const resultDetail = await db.query(query)
 	query =
-`SELECT comment_id, nick_name, date, comment
+`SELECT comment_id as commentId, nick_name as nickName, date, comment
 FROM comment
 LEFT JOIN user ON comment.user_id = user.user_id
 WHERE board_id = "${bordId}"`

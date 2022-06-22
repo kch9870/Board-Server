@@ -9,7 +9,6 @@ class BoardResponseModel extends BaseResponseModel{
         
     }
 
-    // 추후 responsemodel 구축 하는 걸로 변경하기
 }
 
 module.exports = {

@@ -1,29 +1,46 @@
-class UserSignInModel{
+const {BaseRequestModel} = require("./base.request.model");
+
+class UserSignInModel extends BaseRequestModel{
 
     email
     password
 
-    constructor(req) {
-        this.email = req.email
-        this.password = req.password
+    constructor() {
+        super()
     }
 }
 
-class UserSignUpModel{
+class UserSignUpModel extends BaseRequestModel{
     email
     password
     name
     nickName
 
-    constructor(req) {
-        this.email = req.email
-        this.password = req.password
-        this.name = req.name
-        this.nickName = req.nickName
+    constructor() {
+        super()
+    }
+}
+
+class UserCheckEmailModel extends BaseRequestModel{
+
+    email
+
+    constructor() {
+        super();
+    }
+}
+class UserCheckNickName extends BaseRequestModel{
+
+    nickName
+
+    constructor() {
+        super();
     }
 }
 
 module.exports = {
     UserSignInModel,
-    UserSignUpModel
+    UserSignUpModel,
+    UserCheckEmailModel,
+    UserCheckNickName
 }
