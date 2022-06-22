@@ -1,7 +1,7 @@
 const express = require('express');
 const {getUserInfo, addUser} = require("../models/query/user");
 const {addBoard, getBoardList, getBoardDetail} = require("../models/query/board");
-const {addComment} = require("../models/query/comment");
+const {insertComment} = require("../models/query/comment");
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -24,7 +24,7 @@ router.get('/test', function(req, res, next) {
 });
 
 router.get('/dbTest', async (req, res)=>{
-    res.send(await addComment(1,1,'test'))
+    res.send(await getBoardDetail(1))
 })
 
 module.exports = router;

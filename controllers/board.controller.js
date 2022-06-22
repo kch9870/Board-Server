@@ -62,12 +62,15 @@ async function detailBoard (req,res){
         return
     }
 
+    let response = new BaseResponseModel()
+
     const boardDetailResult = await getBoardDetail(boardId)
 
-
-    // boardId가 테이블에 존재하지 않을 때 쿼리문 필요 or boardDetailResult 값이 없는 경우? 를 체크해야 함
-
-    const response = new BoardDetailResponseModel(boardDetailResult)
+    if(boardDetailResult){
+        sendError(response, res, 401, 'not found board')
+        return
+    }
+    response = boardDetailResult
 
     response.responseCode = 200
     response.responseMsg = "success"

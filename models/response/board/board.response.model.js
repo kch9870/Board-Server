@@ -14,7 +14,7 @@ class BoardResponseModel extends BaseResponseModel{
         this.totalCount = addResult.totalCount
         this.lastPage = lastPage
 
-        for(var i = 0; i < addResult.board.length; i++){
+        for(let i = 0; i < addResult.board.length; i++){
             const board = {}       // 초기화
     
             board["boardId"] = addResult.board[i]["board_id"]

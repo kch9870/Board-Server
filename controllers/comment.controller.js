@@ -25,3 +25,7 @@ async function addComment(req, res){
 		sendBadRequest(res)
 	}
 }
+
+module.exports = {
+	addComment
+}

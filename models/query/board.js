@@ -79,6 +79,9 @@ LEFT JOIN user ON board.user_id = user.user_id
 WHERE board_id = "${boardId}"`
 
 	const resultDetail = await db.query(query)
+
+	if(!resultDetail[0]) return false
+
 	query =
 `SELECT comment_id as commentId, nick_name as nickName, date, comment
 FROM comment

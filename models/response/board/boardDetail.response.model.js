@@ -18,7 +18,7 @@ class BoardDetailResponseModel extends BaseResponseModel{
         this.category = boardDetailResult["category"]
         this.date = boardDetailResult["date"]
  
-        for(var i = 0; i < boardDetailResult.comment.length; i++){
+        for(let i = 0; i < boardDetailResult.comment.length; i++){
             const comment = {}       // 초기화
     
             comment["commentId"] = boardDetailResult.comment[i]["comment_id"]
