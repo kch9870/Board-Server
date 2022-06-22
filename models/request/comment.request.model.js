@@ -1,4 +1,4 @@
-import {BaseRequestModel} from "./base.request.model";
+const {BaseRequestModel} = require("./base.request.model");
 
 class CommentRequestModel extends BaseRequestModel{
 

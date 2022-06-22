@@ -1,6 +1,6 @@
-import {CommentRequestModel} from "../models/request/comment.request.model";
-import {sendBadRequest} from "../common/error";
-import {insertComment} from  "../models/query/comment"
+const {CommentRequestModel} = require("../models/request/comment.request.model");
+const {sendBadRequest} = require("../common/error");
+const {insertComment} = require("../models/query/comment");
 
 async function addComment(req, res){
 
