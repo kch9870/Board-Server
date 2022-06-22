@@ -55,14 +55,13 @@ async function categoryListBoard (req,res){
 async function detailBoard (req,res){
     
     const boardId = req.query.boardId
+    let response = new BaseResponseModel()
 
     if(!checkNull(boardId)){
         console.log("/detailBoard params is null")
         sendError(response, res, 400, "bad request")
         return
     }
-
-    let response = new BaseResponseModel()
 
     const boardDetailResult = await getBoardDetail(boardId)
 

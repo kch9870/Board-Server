@@ -8,14 +8,13 @@ const { BaseResponseModel } = require("../models/response/base.response.model");
 async function signIn (req,res){
 
     const userModel = new UserSignInModel()
+    const response = new UserResponseModel()
 
     if(!userModel.checkPrams(req.body)){
         console.log("/signin params is null")
         sendError(response, res, 400, "bad request")
         return
     }
-
-    const response = new UserResponseModel()
 
     const userInfo = await getUserInfo("email", userModel.email)
 
@@ -34,14 +33,13 @@ async function signIn (req,res){
 // 회원가입
 async function signUp(req,res){
     const userModel = new UserSignUpModel()
+    const response = new BaseResponseModel()
 
     if(!userModel.checkPrams(req.body)){
         console.log("/signup params is null")
         sendError(response, res, 400, "bad request")
         return
     }
-
-    const response = new BaseResponseModel()
 
     const addResult = await addUser(userModel.email,userModel.password,userModel.name,userModel.nickName)
 
@@ -60,14 +58,14 @@ async function signUp(req,res){
 // 아이디 중복 체크
 async function checkEmail(req,res){
     const userEmail = new UserCheckEmailModel()
+    const response = new BaseResponseModel()
+
 
     if(!userEmail.checkPrams(req.body)){
         console.log("/emailCheck params is null")
         sendError(response, res, 400, "bad request")
         return
     }
-
-    const response = new BaseResponseModel()
 
     const resultEmail = await getUserInfo("email", userEmail.email)
 
@@ -85,14 +83,13 @@ async function checkEmail(req,res){
 // 닉네임 중복체크
 async function checkNickName(req,res){
     const userNickName = new UserCheckNickName()
+    const response = new BaseResponseModel()
 
     if(!userNickName.checkPrams(req.body)){
         console.log("/emailCheck params is null")
         sendError(response, res, 400, "bad request")
         return
     }
-
-    const response = new BaseResponseModel()
 
     if(!checkNull(userNickName)){
         console.log("/checkNickName params is null")
@@ -116,10 +113,9 @@ async function checkNickName(req,res){
 // 유저 pk로 닉네임 불러오기
 async function getUserNickName(req,res){
     const userId = req.query.userId
-
     const response = new BaseResponseModel()
 
-    if(!checkNull(userId)){
+    if(!userId){
         console.log("/getUserNickName params is null")
         sendError(response, res, 400, "bad request")
         return
@@ -133,9 +129,15 @@ async function getUserNickName(req,res){
     else{
         console.log(getNickName)
 
-        response.responseCode = 200
-        response.responseMsg = "success"
-        response.nickName = getNickName["nick_name"]
+        if(!response.nickName){
+            response.responseCode = 402
+            response.responseMsg = "Request Type Not Number"
+        }
+        else{
+            response.responseCode = 200
+            response.responseMsg = "success"
+            response.nickName = getNickName["nick_name"]
+        }
     
         res.send(response)
     }
