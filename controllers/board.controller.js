@@ -1,21 +1,22 @@
 const {RegisterBoardModel,CategoryListBoardModel} = require("../models/request/board.request.model")
-const {addBoard, getBoardList} = require("../models/query/board");
+const {addBoard, getBoardList, getBoardDetail} = require("../models/query/board");
 const { checkNull } = require("../utils/dataUtils");
 const {BoardResponseModel} = require("../models/response/board/board.response.model");
 const { BaseResponseModel } = require("../models/response/base.response.model");
+const { BoardDetailResponseModel } = require("../models/response/board/boardDetail.response.model");
 
 // 게시글 등록
 async function registerBoard (req,res){
 
-    const registerBoardModel = new RegisterBoardModel()
+    const registerBoardModel = new RegisterBoardModel(req.body)
 
-    if(!registerBoardModel.checkPrams(req.body)){
+    const response = new BaseResponseModel()
+
+    if(!checkNull(registerBoardModel)){
         console.log("/registerBoard params is null")
         sendError(response, res, 400, "bad request")
         return
     }
-
-    const response = new BaseResponseModel()
 
     const addResult = await addBoard(registerBoardModel.title,registerBoardModel.content,registerBoardModel.userId,registerBoardModel.category)
 
@@ -34,20 +35,43 @@ async function registerBoard (req,res){
 // 카테고리 별 게시글 리스트 불러오기
 async function categoryListBoard (req,res){
 
-    const pageNo = req.query.pageNo ? req.query.pageNo : 1
+    const pageNo = req.query.pageNo ? req.query.pageNo : 1 
     const numsOfPages = req.query.numsOfPages ? req.query.numsOfPages : 15
     const category = req.query.category ? req.query.category : 'all'
 
-    const response = new BaseResponseModel()
-    const addResult = await getBoardList(pageNo ,numsOfPages, category)
+    const addResult = await getBoardList(pageNo , numsOfPages, category)
+
+    const lastPage = parseInt((addResult.totalCount-1)/numsOfPages) + 1
+
+    const response = new BoardResponseModel(addResult, pageNo, lastPage)
 
     response.responseCode = 200
     response.responseMsg = "success"
-    response.pageNo = req.query.pageNo
-    response.totalCount = addResult.totalCount
-    response.lastPage = addResult.totalCount / req.query.numsOfPages
-    response.list = addResult.board
 
+    res.send(response)
+}
+
+// 게시글 상세정보 불러오기
+async function detailBoard (req,res){
+    
+    const boardId = req.query.boardId
+
+    if(!checkNull(boardId)){
+        console.log("/detailBoard params is null")
+        sendError(response, res, 400, "bad request")
+        return
+    }
+
+    const boardDetailResult = await getBoardDetail(boardId)
+
+
+    // boardId가 테이블에 존재하지 않을 때 쿼리문 필요 or boardDetailResult 값이 없는 경우? 를 체크해야 함
+
+    const response = new BoardDetailResponseModel(boardDetailResult)
+
+    response.responseCode = 200
+    response.responseMsg = "success"
+        
     res.send(response)
 }
 
@@ -61,5 +85,6 @@ function sendError(response, res, code, msg){
 
 module.exports = {
     registerBoard,
-    categoryListBoard
+    categoryListBoard,
+    detailBoard
 }

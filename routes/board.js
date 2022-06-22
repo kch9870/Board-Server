@@ -8,5 +8,7 @@ router.post('/registerBoard',boardController.registerBoard)
 
 /* GET boardCategoryList. */
 router.get('/categoryList',boardController.categoryListBoard)
+/* GET detailBoard. */
+router.get('/detailBoard',boardController.detailBoard)
 
 module.exports = router
