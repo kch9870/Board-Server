@@ -8,11 +8,12 @@ const { BoardDetailResponseModel } = require("../models/response/board/boardDeta
 // 게시글 등록
 async function registerBoard (req,res){
 
-    const registerBoardModel = new RegisterBoardModel(req.body)
+    const registerBoardModel = new RegisterBoardModel()
 
     const response = new BaseResponseModel()
 
-    if(!checkNull(registerBoardModel)){
+    if(!registerBoardModel.checkPrams(req.body)){
+       
         console.log("/registerBoard params is null")
         sendError(response, res, 400, "bad request")
         return

@@ -7,7 +7,6 @@ async function addComment(req, res){
 	const requestModel = new CommentRequestModel()
 
 	if(requestModel.checkPrams(req.body)){
-
 		const result = await insertComment(requestModel.boardId, requestModel.userId, requestModel.content)
 
 		if(result){
