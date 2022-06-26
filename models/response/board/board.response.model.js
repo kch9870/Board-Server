@@ -15,9 +15,11 @@ class BoardResponseModel extends BaseResponseModel{
         this.lastPage = lastPage
 
         for(const item of addResult.board){
+            const _ = {}
             for(const key in item){
-                this.boardList[key] = item[key]
+                _[key] = item[key]
             }
+            this.boardList.push(_)
         }
     }
 
