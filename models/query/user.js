@@ -21,7 +21,7 @@ async function getUserInfo(columnName ,value, targetColumn="*"){
     if(!value) return false
 
     switch (targetColumn){
-        case '*': targetColumn = 'user_id as userID, email, name, nick_name as nickName, password'
+        case '*': targetColumn = 'user_id as userId, email, name, nick_name as nickName, password'
             break
         case 'user_id' : targetColumn = 'user_id as userID'
             break
