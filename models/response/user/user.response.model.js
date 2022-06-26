@@ -10,10 +10,10 @@ class UserResponseModel extends BaseResponseModel{
     }
 
     setUserInfo(userInfo){
-        this.userInfo["userId"] = userInfo["user_id"]
+        this.userInfo["userId"] = userInfo["userId"]
         this.userInfo["email"] = userInfo["email"]
         this.userInfo["name"] = userInfo["name"]
-        this.userInfo["nickName"] = userInfo["nick_name"]
+        this.userInfo["nickName"] = userInfo["nickName"]
     }
 }
 
