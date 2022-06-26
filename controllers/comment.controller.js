@@ -17,7 +17,7 @@ async function addComment(req, res){
 			}
 			res.send(response)
 		}else{
-
+			sendBadRequest(res)
 		}
 
 	}else{
