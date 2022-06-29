@@ -56,7 +56,8 @@ async function categoryListBoard (req,res){
 async function detailBoard (req,res){
     
     const boardId = req.query.boardId
-    let response = new BoardDetailResponseModel()
+    console.log(boardId)
+
 
     if(!checkNull(boardId)){
         console.log("/detailBoard params is null")
@@ -65,11 +66,7 @@ async function detailBoard (req,res){
     }
 
     const boardDetailResult = await getBoardDetail(boardId)
-
-    if(boardDetailResult){
-        sendError(response, res, 401, 'not found board')
-        return
-    }
+    const response = new BoardDetailResponseModel(boardDetailResult)
 
     response.responseCode = 200
     response.responseMsg = "success"

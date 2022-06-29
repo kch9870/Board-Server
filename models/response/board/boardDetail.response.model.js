@@ -14,17 +14,17 @@ class BoardDetailResponseModel extends BaseResponseModel{
 
         this.title = boardDetailResult["title"]
         this.content = boardDetailResult["content"]
-        this.nickName = boardDetailResult["nick_name"]
+        this.nickName = boardDetailResult["nickName"]
         this.category = boardDetailResult["category"]
         this.date = boardDetailResult["date"]
  
         for(let i = 0; i < boardDetailResult.comment.length; i++){
             const comment = {}       // 초기화
     
-            comment["commentId"] = boardDetailResult.comment[i]["comment_id"]
-            comment["nickName"] = boardDetailResult.comment[i]["nick_name"]
+            comment["commentId"] = boardDetailResult.comment[i]["commentId"]
+            comment["nickName"] = boardDetailResult.comment[i]["nickName"]
             comment["date"] = boardDetailResult.comment[i]["date"]
-            comment["comments"] = boardDetailResult.comment[i]["comments"]
+            comment["comment"] = boardDetailResult.comment[i]["comment"]
     
             this.commentList.push(comment)
         }
