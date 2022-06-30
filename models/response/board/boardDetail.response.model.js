@@ -1,5 +1,6 @@
 const {BaseResponseModel} = require("../base.response.model")
 
+// test git
 class BoardDetailResponseModel extends BaseResponseModel{
 
     title
