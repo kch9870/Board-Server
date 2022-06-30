@@ -1,5 +1,6 @@
 const {BaseResponseModel} = require("../base.response.model")
 
+//test
 class BoardDetailResponseModel extends BaseResponseModel{
     
     title
