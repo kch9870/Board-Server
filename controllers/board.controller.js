@@ -5,7 +5,6 @@ const {BoardResponseModel} = require("../models/response/board/board.response.mo
 const { BaseResponseModel } = require("../models/response/base.response.model");
 const { BoardDetailResponseModel } = require("../models/response/board/boardDetail.response.model");
 
-// test git
 // 게시글 등록
 async function registerBoard (req,res){
 
