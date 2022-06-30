@@ -18,14 +18,11 @@ class BoardDetailResponseModel extends BaseResponseModel{
         this.category = boardDetailResult["category"]
         this.date = boardDetailResult["date"]
  
-        for(let i = 0; i < boardDetailResult.comment.length; i++){
-            const comment = {}       // 초기화
-    
-            comment["commentId"] = boardDetailResult.comment[i]["commentId"]
-            comment["nickName"] = boardDetailResult.comment[i]["nickName"]
-            comment["date"] = boardDetailResult.comment[i]["date"]
-            comment["comment"] = boardDetailResult.comment[i]["comment"]
-    
+        for(const item of boardDetailResult.comment){
+            const comment = {}
+            for(const key in item){
+                comment[key] = item[key]
+            }
             this.commentList.push(comment)
         }
 
