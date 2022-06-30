@@ -7,24 +7,22 @@ const { BoardDetailResponseModel } = require("../models/response/board/boardDeta
 
 // 게시글 등록
 async function registerBoard (req,res){
-
+    
     const registerBoardModel = new RegisterBoardModel()
-
     const response = new BaseResponseModel()
-
+    
     if(!registerBoardModel.checkPrams(req.body)){
-       
         console.log("/registerBoard params is null")
         sendError(response, res, 400, "bad request")
         return
     }
-
+    
     const addResult = await addBoard(registerBoardModel.title,registerBoardModel.content,registerBoardModel.userId,registerBoardModel.category)
-
+    
     if(!addResult) {
         sendError(response, res, 401, "db not connected")
     }
-
+    
     response.responseCode = 200
     response.responseMsg = "success"
     response.boardId = addResult.boardId
@@ -32,23 +30,22 @@ async function registerBoard (req,res){
     res.send(response)
 }
 
-
 // 카테고리 별 게시글 리스트 불러오기
 async function categoryListBoard (req,res){
-
-    const pageNo = req.query.pageNo ? req.query.pageNo : 1 
+    
+    const pageNo = req.query.pageNo ? req.query.pageNo : 1
     const numsOfPages = req.query.numsOfPages ? req.query.numsOfPages : 15
     const category = req.query.category ? req.query.category : 'all'
-
+    
     const addResult = await getBoardList(pageNo , numsOfPages, category)
-
+    
     const lastPage = parseInt((addResult.totalCount-1)/numsOfPages) + 1
-
+    
     const response = new BoardResponseModel(addResult, pageNo, lastPage)
-
+    
     response.responseCode = 200
     response.responseMsg = "success"
-
+    
     res.send(response)
 }
 
@@ -56,14 +53,16 @@ async function categoryListBoard (req,res){
 async function detailBoard (req,res){
     
     const boardId = req.query.boardId
-    let response = new BaseResponseModel()
+    const response = new BoardDetailResponseModel(boardDetailResult)
 
+    console.log(boardId)
+    
     if(!checkNull(boardId)){
         console.log("/detailBoard params is null")
         sendError(response, res, 400, "bad request")
         return
     }
-
+    
     const boardDetailResult = await getBoardDetail(boardId)
 
     if(boardDetailResult){
@@ -71,18 +70,19 @@ async function detailBoard (req,res){
         return
     }
     response = boardDetailResult
-
+    
+    
     response.responseCode = 200
     response.responseMsg = "success"
-        
+    
     res.send(response)
 }
 
-
-
 function sendError(response, res, code, msg){
+    
     response.responseCode = code
     response.responseMsg = msg
+    
     res.send(response)
 }
 
