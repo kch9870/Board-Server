@@ -29,15 +29,14 @@ async function registerBoard (req,res){
     
     res.send(response)
 }
+
 // 카테고리 별 게시글 리스트 불러오기
 async function categoryListBoard (req,res){
-    
     const pageNo = req.query.pageNo ? req.query.pageNo : 1
     const numsOfPages = req.query.numsOfPages ? req.query.numsOfPages : 15
     const category = req.query.category ? req.query.category : 'all'
     
     const addResult = await getBoardList(pageNo , numsOfPages, category)
-    
     const lastPage = parseInt((addResult.totalCount-1)/numsOfPages) + 1
     
     const response = new BoardResponseModel(addResult, pageNo, lastPage)
@@ -61,7 +60,6 @@ async function detailBoard (req,res){
     }
     
     const boardDetailResult = await getBoardDetail(boardId)
-    
     const response = new BoardDetailResponseModel(boardDetailResult)
     
     response.responseCode = 200
@@ -69,13 +67,14 @@ async function detailBoard (req,res){
     
     res.send(response)
 }
+
 function sendError(response, res, code, msg){
-    
     response.responseCode = code
     response.responseMsg = msg
     
     res.send(response)
 }
+
 module.exports = {
     registerBoard,
     categoryListBoard,

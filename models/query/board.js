@@ -69,7 +69,7 @@ LIMIT ${numOfPages} OFFSET ${pageNo}`
 async function getBoardDetail(boardId){
 
 	let query =
-`SELECT board_id as bordId, title, content, nick_name as nickName, category, date, views, (
+`SELECT board_id as boardId, title, content, nick_name as nickName, category, date, views, (
 			SELECT COUNT(board_id)
 			FROM comment
 			WHERE board.board_id = comment.board_id

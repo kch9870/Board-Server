@@ -1,5 +1,5 @@
 const {BaseResponseModel} = require("../base.response.model")
-// test git
+
 class BoardDetailResponseModel extends BaseResponseModel{
     
     title
@@ -25,9 +25,7 @@ class BoardDetailResponseModel extends BaseResponseModel{
             }
             this.commentList.push(comment)
         }
-
     }
-
     // 추후 responsemodel 구축 하는 걸로 변경하기
 }
 
