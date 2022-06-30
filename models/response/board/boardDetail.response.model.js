@@ -1,5 +1,5 @@
 const {BaseResponseModel} = require("../base.response.model")
-
+// test git
 class BoardDetailResponseModel extends BaseResponseModel{
     
     title
@@ -14,7 +14,7 @@ class BoardDetailResponseModel extends BaseResponseModel{
         
         this.title = boardDetailResult["title"]
         this.content = boardDetailResult["content"]
-        this.nickName = boardDetailResult["nick_name"]
+        this.nickName = boardDetailResult["nickName"]
         this.category = boardDetailResult["category"]
         this.date = boardDetailResult["date"]
         
@@ -27,6 +27,8 @@ class BoardDetailResponseModel extends BaseResponseModel{
         }
 
     }
+
+    // 추후 responsemodel 구축 하는 걸로 변경하기
 }
 
 module.exports = {

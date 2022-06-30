@@ -29,7 +29,6 @@ async function registerBoard (req,res){
     
     res.send(response)
 }
-
 // 카테고리 별 게시글 리스트 불러오기
 async function categoryListBoard (req,res){
     
@@ -53,8 +52,6 @@ async function categoryListBoard (req,res){
 async function detailBoard (req,res){
     
     const boardId = req.query.boardId
-    const response = new BoardDetailResponseModel(boardDetailResult)
-
     console.log(boardId)
     
     if(!checkNull(boardId)){
@@ -64,20 +61,14 @@ async function detailBoard (req,res){
     }
     
     const boardDetailResult = await getBoardDetail(boardId)
-
-    if(boardDetailResult){
-        sendError(response, res, 401, 'not found board')
-        return
-    }
-    response = boardDetailResult
     
+    const response = new BoardDetailResponseModel(boardDetailResult)
     
     response.responseCode = 200
     response.responseMsg = "success"
     
     res.send(response)
 }
-
 function sendError(response, res, code, msg){
     
     response.responseCode = code
@@ -85,7 +76,6 @@ function sendError(response, res, code, msg){
     
     res.send(response)
 }
-
 module.exports = {
     registerBoard,
     categoryListBoard,
