@@ -4,7 +4,7 @@ class CommentRequestModel extends BaseRequestModel{
 
 	boardId
 	userId
-	content
+	comment
 
 	constructor() {
 		super();
