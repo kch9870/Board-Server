@@ -1,6 +1,6 @@
 const {UserSignInModel, UserSignUpModel, UserCheckEmailModel, UserCheckNickName} = require("../models/request/user.request.model")
 const {getUserInfo, addUser} = require("../models/query/user");
-const { checkNull } = require("../utils/dataUtils");
+const {sendBadRequest, sendSystemError ,sendError} = require("../common/error");
 const {UserResponseModel} = require("../models/response/user/user.response.model");
 const { BaseResponseModel } = require("../models/response/base.response.model");
 
@@ -12,7 +12,7 @@ async function signIn (req,res){
 
     if(!userModel.checkPrams(req.body)){
         console.log("/signin params is null")
-        sendError(response, res, 400, "bad request")
+        sendBadRequest(res)
         return
     }
 
@@ -37,14 +37,14 @@ async function signUp(req,res){
 
     if(!userModel.checkPrams(req.body)){
         console.log("/signup params is null")
-        sendError(response, res, 400, "bad request")
+        sendBadRequest(res)
         return
     }
 
     const addResult = await addUser(userModel.email,userModel.password,userModel.name,userModel.nickName)
 
     if(!addResult) {
-        sendError(response, res, 401, "db not connected")
+        sendSystemError(res)
     }
 
     response.responseCode = 200
@@ -63,7 +63,7 @@ async function checkEmail(req,res){
 
     if(!userEmail.checkPrams(req.body)){
         console.log("/emailCheck params is null")
-        sendError(response, res, 400, "bad request")
+        sendBadRequest(res)
         return
     }
 
@@ -86,14 +86,8 @@ async function checkNickName(req,res){
     const response = new BaseResponseModel()
 
     if(!userNickName.checkPrams(req.body)){
-        console.log("/emailCheck params is null")
-        sendError(response, res, 400, "bad request")
-        return
-    }
-
-    if(!checkNull(userNickName)){
         console.log("/checkNickName params is null")
-        sendError(response, res, 400, "bad request")
+        sendBadRequest(res)
         return
     }
 
@@ -117,7 +111,7 @@ async function getUserNickName(req,res){
 
     if(!userId){
         console.log("/getUserNickName params is null")
-        sendError(response, res, 400, "bad request")
+        sendBadRequest(res)
         return
     }
 
@@ -141,13 +135,6 @@ async function getUserNickName(req,res){
     
         res.send(response)
     }
-}
-
-
-function sendError(response, res, code, msg){
-    response.responseCode = code
-    response.responseMsg = msg
-    res.send(response)
 }
 
 module.exports = {

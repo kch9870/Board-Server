@@ -1,7 +1,8 @@
-const {RegisterBoardModel,CategoryListBoardModel} = require("../models/request/board.request.model")
+const {RegisterBoardModel} = require("../models/request/board.request.model")
 const {addBoard, getBoardList, getBoardDetail} = require("../models/query/board");
 const { checkNull } = require("../utils/dataUtils");
-const {BoardResponseModel} = require("../models/response/board/board.response.model");
+const { sendBadRequest, sendSystemError ,sendError} = require("../common/error");
+const { BoardResponseModel} = require("../models/response/board/board.response.model");
 const { BaseResponseModel } = require("../models/response/base.response.model");
 const { BoardDetailResponseModel } = require("../models/response/board/boardDetail.response.model");
 
@@ -13,14 +14,14 @@ async function registerBoard (req,res){
     
     if(!registerBoardModel.checkPrams(req.body)){
         console.log("/registerBoard params is null")
-        sendError(response, res, 400, "bad request")
+        sendBadRequest(res)
         return
     }
     
     const addResult = await addBoard(registerBoardModel.title,registerBoardModel.content,registerBoardModel.userId,registerBoardModel.category)
     
     if(!addResult) {
-        sendError(response, res, 401, "db not connected")
+        sendSystemError(res)
     }
     
     response.responseCode = 200
@@ -55,7 +56,7 @@ async function detailBoard (req,res){
     
     if(!checkNull(boardId)){
         console.log("/detailBoard params is null")
-        sendError(response, res, 400, "bad request")
+        sendBadRequest(res)
         return
     }
     
@@ -64,13 +65,6 @@ async function detailBoard (req,res){
     
     response.responseCode = 200
     response.responseMsg = "success"
-    
-    res.send(response)
-}
-
-function sendError(response, res, code, msg){
-    response.responseCode = code
-    response.responseMsg = msg
     
     res.send(response)
 }
