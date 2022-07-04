@@ -2,13 +2,14 @@ const {CommentRequestModel} = require("../models/request/comment.request.model")
 const {sendBadRequest} = require("../common/error");
 const {insertComment} = require("../models/query/comment");
 
-// test
 async function addComment(req, res){
 
 	const requestModel = new CommentRequestModel()
+	console.log(req.body)
 
-	if(requestModel.checkPrams(req.body)){
+	if(!requestModel.checkPrams(req.body)){
 		const result = await insertComment(requestModel.boardId, requestModel.userId, requestModel.content)
+		console.log(result)
 
 		if(result){
 			const response = {
