@@ -90,6 +90,14 @@ WHERE board_id = "${boardId}"`
 
 	resultDetail[0].comment = await db.query(query)
 
+	// 상세보기 클릭 시 조회수 증가 +1
+	query = 
+`UPDATE board set views = views + 1`
+
+  	const resultView = await db.query(query)
+  
+ 	if(!resultView) return false
+
 	return resultDetail[0]
 }
 
