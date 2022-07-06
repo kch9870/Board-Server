@@ -92,7 +92,7 @@ WHERE board_id = "${boardId}"`
 
 	// 상세보기 클릭 시 조회수 증가 +1
 	query = 
-`UPDATE board set views = views + 1`
+`UPDATE board set views = views + 1 WHERE board_id = "${boardId}"`
 
   	const resultView = await db.query(query)
   
