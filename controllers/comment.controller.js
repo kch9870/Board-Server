@@ -5,11 +5,9 @@ const {insertComment} = require("../models/query/comment");
 async function addComment(req, res){
 
 	const requestModel = new CommentRequestModel()
-	console.log(req.body)
 
 	if(requestModel.checkPrams(req.body)){
-		const result = await insertComment(requestModel.boardId, requestModel.userId, requestModel.comment)
-		console.log(result)
+		const result = await insertComment(requestModel.boardId, requestModel.userId, requestModel.content)
 
 		if(result){
 			const response = {

@@ -95,7 +95,7 @@ WHERE board_id = "${boardId}"`
 `UPDATE board set views = views + 1 WHERE board_id = "${boardId}"`
 
   	const resultView = await db.query(query)
-  
+
  	if(!resultView) return false
 
 	return resultDetail[0]
