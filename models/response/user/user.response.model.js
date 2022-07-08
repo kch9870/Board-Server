@@ -2,7 +2,7 @@ const {BaseResponseModel} = require("../base.response.model")
 
 class UserResponseModel extends BaseResponseModel{
 
-    userInfo = {}
+    userInfo
     
     constructor() {
         super()
@@ -10,6 +10,8 @@ class UserResponseModel extends BaseResponseModel{
     }
 
     setUserInfo(userInfo){
+        this.userInfo = {}
+
         this.userInfo["userId"] = userInfo["userId"]
         this.userInfo["email"] = userInfo["email"]
         this.userInfo["name"] = userInfo["name"]
