@@ -54,7 +54,7 @@ async function detailBoard (req,res){
     const boardId = req.query.boardId
     console.log(boardId)
     
-    if(!checkNull(boardId)){
+    if(!boardId){
         console.log("/detailBoard params is null")
         sendBadRequest(res)
         return
@@ -62,11 +62,18 @@ async function detailBoard (req,res){
     
     const boardDetailResult = await getBoardDetail(boardId)
     const response = new BoardDetailResponseModel(boardDetailResult)
+
+    console.log(response);
     
-    response.responseCode = 200
-    response.responseMsg = "success"
-    
-    res.send(response)
+
+    if(response.title){
+        response.responseCode = 200
+        response.responseMsg = "success"
+        
+        res.send(response)            
+    }else{
+        sendBadRequest(res)
+    }
 }
 
 module.exports = {
