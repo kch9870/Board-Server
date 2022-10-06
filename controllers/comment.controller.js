@@ -12,7 +12,7 @@ async function addComment(req, res){
 		if(result){
 			const response = {
 				responseCode: 200,
-				responseMessage: 'success insert comment',
+				responseMsg: 'success insert comment',
 				commentId: result.commentId
 			}
 			res.send(response)
